@@ -11,6 +11,7 @@ export class Card extends Component<ICard> {
   protected _button?: HTMLButtonElement;
   protected _category?: HTMLElement;
   protected _index?: HTMLElement;
+  protected _buttonTitle: string;
 
   constructor(container: HTMLElement, actions?: IActions) {
     super(container);
@@ -57,7 +58,7 @@ export class Card extends Component<ICard> {
   }
 
   set price(value: number | null) {
-    this.setText(this._price, (value) ? value.toString() : '');
+    this.setText(this._price, (value) ? `${value.toString()} синапсов` : '');
     this.disablePriceButton(value);
   }
 
@@ -88,5 +89,11 @@ export class Card extends Component<ICard> {
 
   set description(value: string) {
     this.setText(this._description, value);
+  }
+
+  set buttonTitle(value: string) {
+    if (this._button) {
+      this._button.textContent = value;
+    }
   }
 }

@@ -90,6 +90,7 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 // Данные для отображения карточки
 export interface ICard extends IProduct{
   index?: string;
+  buttonTitle? : string;
 }
 
 // Данные для отображения корзиный

@@ -152,6 +152,7 @@ yarn build
   - set/get `category` - управляет категорией и ее цветом.
   - set `image` - устанавливает изображение товара.
   - set `description` - устанавливает описание товара.
+  - set `buttonTitle` - устанавливает textContent кнопки.
 ### 3. Класс `Basket`
 Класс для отображения и управления компонентом корзины покупок. Обеспечивает отображение товаров, управление их выбором и общей стоимостью.
 
@@ -268,6 +269,7 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 // Данные для отображения карточки
 export interface ICard extends IProduct{
   index?: string; // индекс товара в корзине(опционально)
+  buttonTitle? : string; // textContent для кнопки покупки
 }
 
 // Данные для отображения корзиный
@@ -302,6 +304,7 @@ export interface ISuccessActions {
 items:changed // изменение продуктов в каталоге
 card:select // выбор карточки из каталона
 preview:changed // изменение окна детального просмотра
+product:toggle // переключение продукта в коризне
 product:add // добавление продукта в корзину
 product:delete // удаление продукта из корзины
 basket:changed // изменение корзины

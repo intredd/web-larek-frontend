@@ -61,7 +61,7 @@ events.on('card:select', (item: Product) => {
 events.on('preview:changed', (item: Product) => {
   const card = new Card(cloneTemplate(cardPreviewTemplate), {
     onClick: () => {
-      events.emit('product:add', item)
+      events.emit('product:toggle', item);
     }
   });
   modal.render({
@@ -70,16 +70,24 @@ events.on('preview:changed', (item: Product) => {
       description: item.description,
       image: item.image,
       price: item.price,
-      category: item.category
+      category: item.category,
+      buttonTitle: (appData.basket.indexOf(item) < 0) ? 'Купить' : "Удалить из корзины"
     })
   })
 })
 
-// Добавление/удаление товара и обновление счетчика
-events.on('product:add', (item: Product) => {
+// Переключение/добавление/удаление товара и обновление счетчика
+events.on('product:toggle', (item: Product) => {
   modal.close();
-  appData.addToBasket(item);
+  if(appData.basket.indexOf(item) < 0){
+    events.emit('product:add', item);
+  }
+  else{
+    events.emit('product:delete', item);
+  }
 })
+
+events.on('product:add', (item: Product) => appData.addToBasket(item));
 
 events.on('product:delete', (item: Product) => appData.removeFromBasket(item));
 
@@ -180,11 +188,11 @@ events.on('order:submit', () => {
 events.on('contacts:submit', () => {
   api.orderProducts(appData.order)
     .then((result) => {
+      appData.clearBasket();
+      appData.clearOrder();
       const success = new Success(cloneTemplate(successTemplate), {
           onClick: () => {
               modal.close();
-              appData.clearBasket();
-              appData.clearOrder();
           }
       });
       success.total = result.total.toString();
