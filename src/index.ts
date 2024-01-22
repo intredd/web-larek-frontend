@@ -62,6 +62,7 @@ events.on('preview:changed', (item: Product) => {
   const card = new Card(cloneTemplate(cardPreviewTemplate), {
     onClick: () => {
       events.emit('product:toggle', item);
+      card.buttonTitle = (appData.basket.indexOf(item) < 0) ? 'Купить' : 'Удалить из корзины'
     }
   });
   modal.render({
@@ -78,7 +79,7 @@ events.on('preview:changed', (item: Product) => {
 
 // Переключение/добавление/удаление товара и обновление счетчика
 events.on('product:toggle', (item: Product) => {
-  modal.close();
+  //modal.close();
   if(appData.basket.indexOf(item) < 0){
     events.emit('product:add', item);
   }
@@ -87,7 +88,10 @@ events.on('product:toggle', (item: Product) => {
   }
 })
 
-events.on('product:add', (item: Product) => appData.addToBasket(item));
+events.on('product:add', (item: Product) => {
+  appData.addToBasket(item);
+
+});
 
 events.on('product:delete', (item: Product) => appData.removeFromBasket(item));
 
